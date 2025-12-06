@@ -1,35 +1,98 @@
-<html>
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-    <title>Best store!</title>
-    <script type="text/javascript" src="/static/update.js"></script>
-    <link href="static/store.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Список посещённых городов</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f0f4ff;
+            margin: 0;
+        }
+        header {
+            background: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 6px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input[type="text"],
+        input[type="date"] {
+            width: 100%;
+            padding: 6px 8px;
+            margin-top: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            margin-top: 15px;
+            padding: 8px 16px;
+            border: none;
+            background: #3498db;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            padding: 8px 6px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+    </style>
 </head>
-
 <body>
-    <h1>Furniture store:</h1>
-    <h3>Add new product:</h3>
-    <form>
-        <div>
-            <input type="text" name="prod_name" id="prod_name">
-            <label for="prod_name">Product name</label>
-        </div>
-        <div>
-            <input type="number" name="price" id="price">
-            <label for="price">Price (rub.)</label>
-        </div>
-        <button onClick="addProduct()">Add</button>
+<header>
+    <h1>Мои путешествия</h1>
+</header>
+<div class="container">
+    <h2>Добавить посещённый город</h2>
+    <form method="post">
+        <label for="town">Город:</label>
+        <input type="text" id="town" name="town" required>
+
+        <label for="visit_date">Дата посещения:</label>
+        <input type="date" id="visit_date" name="visit_date" required>
+
+        <button type="submit">Сохранить</button>
     </form>
-    <ul>
-        {% for product in products_list %}
-        <li>
-            <div>
-                <div>{{ product['prod_name'] }}</div>
-                <div>{{ product['price'] }} rub.</div>
-                <input value="{{product['id']}}" onChange="updateProd(this)" name="in_stock" type="checkbox" {% if product.in_stock %} checked {% endif %}>
-                <label for="in_stock">In stock</label>
-            </div>
-        </li>
-        {% endfor %}
-    </ul>
+
+    <h2>Список посещённых городов</h2>
+    {% if visits %}
+        <table>
+            <tr>
+                <th>Город</th>
+                <th>Дата посещения</th>
+                <th></th>
+            </tr>
+            {% for v in visits %}
+            <tr>
+                <td>{{ v.town }}</td>
+                <td>{{ v.visit_date.strftime("%d.%m.%Y") }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Пока ничего нет. Добавьте первый город!</p>
+    {% endif %}
+</div>
 </body>
 </html>
